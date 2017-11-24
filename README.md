@@ -1,2 +1,5 @@
-# Simple-RESTFull-Blog
-This is a simple RESTFull Blog Create in purpose of learning RESTFull Routing and MongoDb
+# RESTFull simple blog
+
+A simple RESTFull Blog Create implementing a basic CRUD 
+
+![alt text](https://github.com/ThalKod/Simple-RESTFull-Blog/blob/master/Index.jpg)
