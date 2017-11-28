@@ -51,7 +51,6 @@ app.get("/", function(req, res){
 
 //Index ROUTE
 app.get("/blogs", function(req, res){
-    //Finding Blog and render Homepage
     Blog.find({}, function(err, rBlogs){
         if(err){
             console.log("Error retrieving Database Filed");   
@@ -68,8 +67,6 @@ app.get("/blogs/new", function(req, res){
 
 // Create ROUTE
 app.post("/blogs", function(req, res){
-    //Creating and save a database records then redireects
-
     req.body.blog.body = req.sanitize(req.body.blog.body);    
 
     Blog.create(req.body.blog, function(err, rblogs){
@@ -83,7 +80,6 @@ app.post("/blogs", function(req, res){
 
 //SHOW ROUTES 
 app.get("/blogs/:id", function(req, res){
-    //Finding Blog and Render it
     Blog.findById(req.params.id, function(err, rBlog){
         if(err){
             res.redirect("index");
