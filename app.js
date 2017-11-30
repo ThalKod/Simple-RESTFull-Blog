@@ -10,13 +10,19 @@ var express          = require("express"),
     expressSanitizer = require("express-sanitizer");
    
 
+
+
 app.set("view engine", "ejs");
 app.use(express.static("public")); 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
-mongoose.connect("mongodb://localhost/blogDb", {useMongoClient: true});
+console.log(process.env.DATABASEURL);
+mongoose.connect(process.env.DATABASEURL, {useMongoClient: true});
+//mongoose.connect("mongodb://localhost/blogdb", {useMongoClient: true});
+
+
 mongoose.Promise = global.Promise;
 
 var blogSchema = new mongoose.Schema({
@@ -126,6 +132,6 @@ app.delete("/blogs/:id", function(req, res){
     });
 });
 
-app.listen(3000, function(){
+app.listen(process.env.port || 3000, function(){
     console.log("Server is Active... ");
 }); 
