@@ -19,7 +19,7 @@ app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
 
-mongoose.connect(process.env.DATABASEURL, {useMongoClient: true});
+mongoose.connect("mongodb://testBlogapp:password@ds123956.mlab.com:23956/blogapp", {useMongoClient: true});
 //mongoose.connect("mongodb://localhost/blogdb", {useMongoClient: true});
 
 
