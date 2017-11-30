@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
-
-mongoose.connect("mongodb://testBlogapp:password@ds123956.mlab.com:23956/blogapp", {useMongoClient: true});
+var DBUrl = process.env.DATABASEURL || "mongodb://localhost/blogdb";
+mongoose.connect(DBUrl, {useMongoClient: true});
 //mongoose.connect("mongodb://localhost/blogdb", {useMongoClient: true});
 
 
