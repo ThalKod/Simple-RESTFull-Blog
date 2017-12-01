@@ -7,10 +7,14 @@ var express          = require("express"),
     mongoose         = require("mongoose"),
     bodyParser       = require("body-parser"),
     app              = express(),
-    expressSanitizer = require("express-sanitizer");
+    expressSanitizer = require("express-sanitizer"),
+    Blog             = require("./models/blog"),
+    User             = require("./models/user"),
+    passport         = require("passport"),
+    LocalStrategy    = require("passport-local"),
+    expressSession   = require("express-session");   
+    
    
-
-
 
 app.set("view engine", "ejs");
 app.use(express.static("public")); 
@@ -19,33 +23,24 @@ app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
 var DBUrl = process.env.DATABASEURL || "mongodb://localhost/blogdb";
+
 mongoose.connect(DBUrl, {useMongoClient: true});
-//mongoose.connect("mongodb://localhost/blogdb", {useMongoClient: true});
-
-
 mongoose.Promise = global.Promise;
 
-var blogSchema = new mongoose.Schema({
-    title: String,
-    image: String,
-    body: String,
-    date: {type: Date, default: Date.now }
-}); 
 
-var Blog = mongoose.model("Blog", blogSchema);
+//Passport Configuration
+app.use((expressSession)({
+    secret: "a4f8542071f-c33873-443447-8ee2321",
+    resave: false,
+    saveUninitialized: false
+}));
 
-// Creating a DB entries For Test
-// Blog.create({
-//     title: "Test",
-//     image: "http://www.pngall.com/wp-content/uploads/2016/07/Car-Free-PNG-Image.png",
-//     body: "Lorem ipsum dolor sit amet, eos cu decore audire assentior. Has in quod fugit putant. Eam singulis adipisci in, ei putent expetendis nec, vix labores fuisset id. Sed te summo falli intellegebat, usu meis graeci te. At ferri lorem sea. Cu vim errem munere legere. Percipit mnesarchum sit cu, cu partem nemore verear nec, dicta bonorum vivendo ius te."
-// }, function(err, rBlogs){
-//     if(err){
-//         console.log("Error not Created");
-//     }else{
-//         console.log(rBlogs);
-//     }
-// });
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //#################################################################################
 //################################ ROUTES  ########################################
@@ -131,6 +126,40 @@ app.delete("/blogs/:id", function(req, res){
         }
     });
 });
+
+//////////////////////////////////////////////////////////////////////////////
+
+//Rigister Routes
+app.get("/register", function(req,res){
+    res.render("register");
+}); 
+
+app.post("/register", function(req, res){
+    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }else{
+            console.log(user);
+            passport.authenticate("local")(req, res, function(){
+                res.redirect("/");
+            });
+        }
+    });
+});
+
+//Login Routes
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+app.post("/login", passport.authenticate("local",{
+    successRedirect: "/",
+    failureRedirect: "login"
+}), function(req, res){
+});
+
+
 
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server is Active... ");

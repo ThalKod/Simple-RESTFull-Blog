@@ -16,7 +16,12 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-sanitizer": "^1.0.2",
+    "express-session": "^1.15.6",
     "method-override": "^2.3.10",
-    "mongoose": "^4.12.3"
+    "mongoose": "^4.12.3",
+    "nodemon": "^1.12.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.4.0"
   }
 }
