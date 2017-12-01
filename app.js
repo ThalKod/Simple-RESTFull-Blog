@@ -165,6 +165,10 @@ app.post("/login", passport.authenticate("local",{
 }), function(req, res){
 });
 
+app.get("/logout", function(req, req){
+    req.logout();
+    res.redirect("/");
+});
 
 
 app.listen(process.env.PORT || 3000, function(){
