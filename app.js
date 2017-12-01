@@ -30,7 +30,7 @@ var blogSchema = new mongoose.Schema({
     image: String,
     body: String,
     date: {type: Date, default: Date.now }
-});
+}); 
 
 var Blog = mongoose.model("Blog", blogSchema);
 
