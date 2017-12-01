@@ -10,6 +10,7 @@ var express          = require("express"),
     expressSanitizer = require("express-sanitizer"),
     Blog             = require("./models/blog"),
     User             = require("./models/user"),
+    Comment          = require("./models/comment"),
     passport         = require("passport"),
     LocalStrategy    = require("passport-local"),
     expressSession   = require("express-session");   
@@ -170,7 +171,6 @@ app.get("/logout", function(req, res){
     req.logout();
     res.redirect("/");
 });
-
 
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server is Active... ");
