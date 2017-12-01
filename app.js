@@ -172,6 +172,10 @@ app.get("/logout", function(req, res){
     res.redirect("/");
 });
 
+///////////////////////////////////////////////////////////////////////////////////////
+
+//Comments Routes
+
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server is Active... ");
 }); 

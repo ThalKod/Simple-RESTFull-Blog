@@ -4,6 +4,7 @@ i.icon{
 
 .container.main{
     margin-top: 100px;
+    margin-bottom: 20px;
 }
 
 h1{
@@ -12,4 +13,12 @@ h1{
 
 #delete{
     display: inline;
+}
+
+.ui.segment:last-child{
+    margin-bottom: 10px;
+}
+
+.description{
+    margin-top: 15px;
 }
