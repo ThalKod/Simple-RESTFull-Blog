@@ -45,7 +45,8 @@ passport.deserializeUser(User.deserializeUser());
 
 //Setting a General Middleware
 app.use(function(req, res, next){
-     req.locals.currentUser = req.user;    
+     res.locals.currentUser = req.user;
+     next();    
  });
 
 //#################################################################################

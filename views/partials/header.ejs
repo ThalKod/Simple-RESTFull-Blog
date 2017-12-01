@@ -16,15 +16,19 @@
                     <a href="/" class="item">Home</a>
                     <a href="/blogs/new" class="item">News Post</a>
 
-                    if(){
-                        
-                    }else{
-                        <div class="right menu">
-                            <a href="/login" class="item">Sign In</a>
-                            <a href="/register" class="item">Sign Up</a>
-                        </div>
-                    }
                     
+                   <% if(!currentUser){ %>
+                    <div class="right menu">
+                        <a href="/login" class="item">Sign In</a>
+                        <a href="/register" class="item">Sign Up</a>
+                    </div>
+                <% }else{ %>
+                        <div class="right menu">
+                            <span class="item"><%=currentUser.username %></span>
+                            <a href="/logout" class="item">Sign Out</a>
+                        </div>
+                   <% } %>
+                   
                 </div>
             </div>
     
