@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
+
 var DBUrl = process.env.DATABASEURL || "mongodb://localhost/blogdb";
 
 mongoose.connect(DBUrl, {useMongoClient: true});
@@ -41,6 +42,12 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//Setting a General Middleware
+app.use(function(req, res, next){
+     res.locals.currentUser = req.user;
+     next();    
+ });
 
 //#################################################################################
 //################################ ROUTES  ########################################
@@ -159,6 +166,10 @@ app.post("/login", passport.authenticate("local",{
 }), function(req, res){
 });
 
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/");
+});
 
 
 app.listen(process.env.PORT || 3000, function(){
