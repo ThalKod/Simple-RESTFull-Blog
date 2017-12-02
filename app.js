@@ -26,7 +26,11 @@ app.use(expressSanitizer());
 
 var DBUrl = process.env.DATABASEURL || "mongodb://localhost/blogdb";
 
-mongoose.connect(DBUrl, {useMongoClient: true});
+mongoose.connect(DBUrl, {useMongoClient: true}, function(err){
+    if(err){
+        throw err;
+    }
+});
 mongoose.Promise = global.Promise;
 
 
@@ -175,6 +179,28 @@ app.get("/logout", function(req, res){
 ///////////////////////////////////////////////////////////////////////////////////////
 
 //Comments Routes
+app.post("/blogs/:id/comments", function(req, res){
+    Blog.findById(req.params.id, function(err, rBlog){
+        if(err){
+            console.log(err);
+            res.redirect("/");
+        }else{
+            Comment.create(req.body.comment, function(err, rComment){
+                if(err){
+                    console.log(err);
+                    res.redirect("back");
+                }else{
+                    rComment.author.id  = req.user.id;
+                    rComment.author.username = req.user.username;
+                    rComment.save();
+
+                    rBlog.comment.push(rComment);
+                    rBlog.save();
+                }
+            });
+        }   
+    });
+});
 
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server is Active... ");
