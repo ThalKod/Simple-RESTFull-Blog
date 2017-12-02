@@ -20,39 +20,19 @@
     </div> 
     <div class="ui comments">
         <h3 class="ui dividing header">Comments</h3>
+       <% blog.comment.forEach(function(comment){ %>
         <div class="comment">
-          <div class="content">
-            <a class="author">Matt</a>
-            <div class="metadata">
-              <span class="date">Today at 5:42PM</span>
-            </div>
-            <div class="text">
-              How artistic!
+            <div class="content">
+              <a class="author"><%= comment.author.username %></a>
+              <div class="metadata">
+                <span class="date">Today at 5:42PM</span>
+              </div>
+              <div class="text">
+               <%= comment.text %>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="comment">
-          <div class="content">
-            <a class="author">Elliot Fu</a>
-            <div class="metadata">
-              <span class="date">Yesterday at 12:30AM</span>
-            </div>
-            <div class="text">
-              <p>This has been very useful for my research. Thanks as well!</p>
-            </div>
-          </div>
-        </div>
-        <div class="comment">
-          <div class="content">
-            <a class="author">Joe Henderson</a>
-            <div class="metadata">
-              <span class="date">5 days ago</span>
-            </div>
-            <div class="text">
-              Dude, this is awesome. Thanks so much
-            </div>
-          </div>
-        </div>
+       <% }); %>  
         <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
           <div class="field">
             <textarea name="comment[text]"></textarea>
