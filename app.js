@@ -190,12 +190,14 @@ app.post("/blogs/:id/comments", function(req, res){
                     console.log(err);
                     res.redirect("back");
                 }else{
-                    rComment.author.id  = req.user.id;
+                    rComment.author.id  = req.user._id;
                     rComment.author.username = req.user.username;
                     rComment.save();
 
                     rBlog.comment.push(rComment);
                     rBlog.save();
+
+                    res.redirect("/blogs/" + req.params.id);
                 }
             });
         }   
