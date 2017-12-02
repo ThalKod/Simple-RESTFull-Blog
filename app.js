@@ -93,7 +93,7 @@ app.post("/blogs", function(req, res){
 
 //SHOW ROUTES 
 app.get("/blogs/:id", function(req, res){
-    Blog.findById(req.params.id, function(err, rBlog){
+    Blog.findById(req.params.id).populate("comment").exec(function(err, rBlog){
         if(err){
             res.redirect("index");
         }else{
