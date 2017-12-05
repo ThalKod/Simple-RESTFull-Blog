@@ -1,5 +1,6 @@
 var  express             = require("express"),
-     Blog                = require("../models/blog");
+     Blog                = require("../models/blog"),
+     middleware          = require("../middleware/index");
      
 
 var router              = express.Router();
@@ -18,12 +19,12 @@ router.get("/", function(req, res){
 });
 
 //New ROUTE
-router.get("/new", function(req, res){
+router.get("/new", middleware.isLogedIn, function(req, res){
     res.render("new");
 });
 
 // Create ROUTE
-router.post("/", function(req, res){
+router.post("/", middleware.isLogedIn, function(req, res){
     req.body.blog.body = req.sanitize(req.body.blog.body);    
 
     Blog.create(req.body.blog, function(err, rblogs){
