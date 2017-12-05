@@ -30,6 +30,11 @@
               <div class="text">
                <%= comment.text %>
               </div>
+              <form id="delCommentForm" action="/blogs/<%= blog._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
+                 <div class="actions">
+                    <a class="reply">Delete</a>
+                 </div>
+              </form>
             </div>
           </div>
        <% }); %>  
