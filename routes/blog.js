@@ -6,7 +6,7 @@ var router              = express.Router();
 
 
 //Index ROUTE
-router.get("/blogs", function(req, res){
+router.get("/", function(req, res){
     Blog.find({}, function(err, rBlogs){
         if(err){
             console.log("Error retrieving Database Filed");   
@@ -17,12 +17,12 @@ router.get("/blogs", function(req, res){
 });
 
 //New ROUTE
-router.get("/blogs/new", function(req, res){
+router.get("/new", function(req, res){
     res.render("new");
 });
 
 // Create ROUTE
-router.post("/blogs", function(req, res){
+router.post("/", function(req, res){
     req.body.blog.body = req.sanitize(req.body.blog.body);    
 
     Blog.create(req.body.blog, function(err, rblogs){
@@ -35,7 +35,7 @@ router.post("/blogs", function(req, res){
 });
 
 //SHOW ROUTES 
-router.get("/blogs/:id", function(req, res){
+router.get("/:id", function(req, res){
     Blog.findById(req.params.id).populate("comment").exec(function(err, rBlog){
         if(err){
             res.redirect("index");
@@ -46,7 +46,7 @@ router.get("/blogs/:id", function(req, res){
 });
 
 //EDIT ROUTE
-router.get("/blogs/:id/edit", function(req,res){
+router.get("/:id/edit", function(req,res){
    Blog.findById(req.params.id, function(err, rBlog){
         if(err){
             res.redirect("/blogs");
@@ -57,7 +57,7 @@ router.get("/blogs/:id/edit", function(req,res){
 });
 
 //UPDATE ROUTES
-router.put("/blogs/:id", function(req, res){
+router.put("/:id", function(req, res){
 
     req.body.blog.body = req.sanitize(req.body.blog.body);
 
@@ -71,7 +71,7 @@ router.put("/blogs/:id", function(req, res){
 });
 
 //Destroy ROUTE
-router.delete("/blogs/:id", function(req, res){
+router.delete("/:id", function(req, res){
     Blog.findByIdAndRemove(req.params.id, function(err){
         if(err){
             res.redirect("/blogs");

@@ -57,9 +57,9 @@ app.use(function(req, res, next){
      next();    
  });
 
-app.use(indexRoute);
-app.use(blogRoute);
-app.use(commentRoute);
+app.use("/",indexRoute);
+app.use("/blogs",blogRoute);
+app.use("/blogs/:id",commentRoute);
 
 
 app.listen(process.env.PORT || 3000, function(){

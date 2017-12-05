@@ -6,7 +6,7 @@ var router      = express.Router();
 
 
 //Create Comment routes
-router.post("/blogs/:id/comments", function(req, res){
+router.post("/comments", function(req, res){
     Blog.findById(req.params.id, function(err, rBlog){
         if(err){
             console.log(err);
@@ -30,6 +30,7 @@ router.post("/blogs/:id/comments", function(req, res){
         }   
     });
 });
+
 
 
 module.exports = router;
