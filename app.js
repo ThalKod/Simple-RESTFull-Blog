@@ -13,7 +13,8 @@ var express          = require("express"),
     Comment          = require("./models/comment"),
     passport         = require("passport"),
     LocalStrategy    = require("passport-local"),
-    expressSession   = require("express-session");   
+    expressSession   = require("express-session"),
+    blogRoute        = require("./routes/blog");   
     
    
 
@@ -54,93 +55,13 @@ app.use(function(req, res, next){
      next();    
  });
 
-//#################################################################################
-//################################ ROUTES  ########################################
-//#################################################################################
+app.use(blogRoute);
 
 app.get("/", function(req, res){
     res.redirect("/blogs");
 });
 
-//Index ROUTE
-app.get("/blogs", function(req, res){
-    Blog.find({}, function(err, rBlogs){
-        if(err){
-            console.log("Error retrieving Database Filed");   
-        }else{
-            res.render("index", {blogs: rBlogs});
-        }
-    }); 
-});
-
-//New ROUTE
-app.get("/blogs/new", function(req, res){
-    res.render("new");
-});
-
-// Create ROUTE
-app.post("/blogs", function(req, res){
-    req.body.blog.body = req.sanitize(req.body.blog.body);    
-
-    Blog.create(req.body.blog, function(err, rblogs){
-        if(err){
-            res.render("new");
-        }else{
-            res.redirect("/blogs");
-        }
-    });
-});
-
-//SHOW ROUTES 
-app.get("/blogs/:id", function(req, res){
-    Blog.findById(req.params.id).populate("comment").exec(function(err, rBlog){
-        if(err){
-            res.redirect("index");
-        }else{
-            res.render("show", {blog: rBlog});
-        }
-    });
-});
-
-//EDIT ROUTE
-app.get("/blogs/:id/edit", function(req,res){
-   Blog.findById(req.params.id, function(err, rBlog){
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.render("edit", {blog: rBlog});
-        }
-   });
-});
-
-//UPDATE ROUTES
-app.put("/blogs/:id", function(req, res){
-
-    req.body.blog.body = req.sanitize(req.body.blog.body);
-
-    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, rBlog){
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.redirect("/blogs/"+ req.params.id);
-        }
-    })
-});
-
-//Destroy ROUTE
-app.delete("/blogs/:id", function(req, res){
-    Blog.findByIdAndRemove(req.params.id, function(err){
-        if(err){
-            res.redirect("/blogs");
-        }
-        else{
-            res.redirect("/blogs");
-        }
-    });
-});
-
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////////
 //Rigister Routes
 app.get("/register", function(req,res){
     res.render("register");
