@@ -59,7 +59,7 @@ app.use(function(req, res, next){
 
 app.use("/",indexRoute);
 app.use("/blogs",blogRoute);
-app.use("/blogs/:id",commentRoute);
+app.use("/blogs/:id/comments",commentRoute);
 
 
 app.listen(process.env.PORT || 3000, function(){

@@ -38,7 +38,7 @@ router.post("/", function(req, res){
 router.get("/:id", function(req, res){
     Blog.findById(req.params.id).populate("comment").exec(function(err, rBlog){
         if(err){
-            res.redirect("index");
+            res.redirect("/");
         }else{
             res.render("show", {blog: rBlog});
         }
