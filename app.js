@@ -10,9 +10,13 @@ var express          = require("express"),
     expressSanitizer = require("express-sanitizer"),
     Blog             = require("./models/blog"),
     User             = require("./models/user"),
+    Comment          = require("./models/comment"),
     passport         = require("passport"),
     LocalStrategy    = require("passport-local"),
-    expressSession   = require("express-session");   
+    expressSession   = require("express-session"),
+    blogRoute        = require("./routes/blog"),
+    commentRoute     = require("./routes/comment"),
+    indexRoute       = require("./routes/index");   
     
    
 
@@ -25,7 +29,11 @@ app.use(expressSanitizer());
 
 var DBUrl = process.env.DATABASEURL || "mongodb://localhost/blogdb";
 
-mongoose.connect(DBUrl, {useMongoClient: true});
+mongoose.connect(DBUrl, {useMongoClient: true}, function(err){
+    if(err){
+        throw err;
+    }
+});
 mongoose.Promise = global.Promise;
 
 
@@ -49,127 +57,9 @@ app.use(function(req, res, next){
      next();    
  });
 
-//#################################################################################
-//################################ ROUTES  ########################################
-//#################################################################################
-
-app.get("/", function(req, res){
-    res.redirect("/blogs");
-});
-
-//Index ROUTE
-app.get("/blogs", function(req, res){
-    Blog.find({}, function(err, rBlogs){
-        if(err){
-            console.log("Error retrieving Database Filed");   
-        }else{
-            res.render("index", {blogs: rBlogs});
-        }
-    }); 
-});
-
-//New ROUTE
-app.get("/blogs/new", function(req, res){
-    res.render("new");
-});
-
-// Create ROUTE
-app.post("/blogs", function(req, res){
-    req.body.blog.body = req.sanitize(req.body.blog.body);    
-
-    Blog.create(req.body.blog, function(err, rblogs){
-        if(err){
-            res.render("new");
-        }else{
-            res.redirect("/blogs");
-        }
-    });
-});
-
-//SHOW ROUTES 
-app.get("/blogs/:id", function(req, res){
-    Blog.findById(req.params.id, function(err, rBlog){
-        if(err){
-            res.redirect("index");
-        }else{
-            res.render("show", {blog: rBlog});
-        }
-    });
-});
-
-//EDIT ROUTE
-app.get("/blogs/:id/edit", function(req,res){
-   Blog.findById(req.params.id, function(err, rBlog){
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.render("edit", {blog: rBlog});
-        }
-   });
-});
-
-//UPDATE ROUTES
-app.put("/blogs/:id", function(req, res){
-
-    req.body.blog.body = req.sanitize(req.body.blog.body);
-
-    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, rBlog){
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.redirect("/blogs/"+ req.params.id);
-        }
-    })
-});
-
-//Destroy ROUTE
-app.delete("/blogs/:id", function(req, res){
-    Blog.findByIdAndRemove(req.params.id, function(err){
-        if(err){
-            res.redirect("/blogs");
-        }
-        else{
-            res.redirect("/blogs");
-        }
-    });
-});
-
-//////////////////////////////////////////////////////////////////////////////
-
-//Rigister Routes
-app.get("/register", function(req,res){
-    res.render("register");
-}); 
-
-app.post("/register", function(req, res){
-    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-        if(err){
-            console.log(err);
-            return res.render("register");
-        }else{
-            console.log(user);
-            passport.authenticate("local")(req, res, function(){
-                res.redirect("/");
-            });
-        }
-    });
-});
-
-//Login Routes
-app.get("/login", function(req, res){
-    res.render("login");
-});
-
-app.post("/login", passport.authenticate("local",{
-    successRedirect: "/",
-    failureRedirect: "login"
-}), function(req, res){
-});
-
-app.get("/logout", function(req, res){
-    req.logout();
-    res.redirect("/");
-});
+app.use("/",indexRoute);
+app.use("/blogs",blogRoute);
+app.use("/blogs/:id/comments",commentRoute);
 
 
 app.listen(process.env.PORT || 3000, function(){

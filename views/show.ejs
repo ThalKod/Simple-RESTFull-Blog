@@ -7,7 +7,7 @@
         <div class="item">
             <img class="ui centered rounded image" src="<%= blog.image %>" alt="Image Blog">
             <div class="content">
-                <span><%= blog.date.toDateString() %></span>
+                <strong><%= blog.date.toDateString() %></strong>
             </div>
             <div class="description">
                 <p><%- blog.body %></p>
@@ -17,7 +17,36 @@
                 <button class="ui red inverted button" type="submit" >Delete</button>
             </form>
         </div>
-    </div>        
+    </div> 
+    <div class="ui comments">
+        <h3 class="ui dividing header">Comments</h3>
+       <% blog.comment.forEach(function(comment){ %>
+        <div class="comment">
+            <div class="content">
+              <a class="author"><%= comment.author.username %></a>
+              <div class="metadata">
+                <span class="date">Today at 5:42PM</span>
+              </div>
+              <div class="text">
+               <%= comment.text %>
+              </div>
+              <form id="delCommentForm" action="/blogs/<%= blog._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
+                 <div class="actions">
+                    <a class="reply">Delete</a>
+                 </div>
+              </form>
+            </div>
+          </div>
+       <% }); %>  
+        <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
+          <div class="field">
+            <textarea name="comment[text]"></textarea>
+          </div>
+          <button type="submit" class="ui blue labeled submit icon button">
+            <i class="icon edit"></i> Add Reply 
+          </button>
+        </form>
+      </div>       
 </div>
 
 <% include partials/footer %>
