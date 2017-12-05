@@ -14,7 +14,9 @@ var express          = require("express"),
     passport         = require("passport"),
     LocalStrategy    = require("passport-local"),
     expressSession   = require("express-session"),
-    blogRoute        = require("./routes/blog");   
+    blogRoute        = require("./routes/blog"),
+    commentRoute     = require("./routes/comment"),
+    indexRoute       = require("./routes/index");   
     
    
 
@@ -55,75 +57,10 @@ app.use(function(req, res, next){
      next();    
  });
 
+app.use(indexRoute);
 app.use(blogRoute);
+app.use(commentRoute);
 
-app.get("/", function(req, res){
-    res.redirect("/blogs");
-});
-
-////////////////////////////////////////////////////////////////////////////////////
-//Rigister Routes
-app.get("/register", function(req,res){
-    res.render("register");
-}); 
-
-app.post("/register", function(req, res){
-    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-        if(err){
-            console.log(err);
-            return res.render("register");
-        }else{
-            console.log(user);
-            passport.authenticate("local")(req, res, function(){
-                res.redirect("/");
-            });
-        }
-    });
-});
-
-//Login Routes
-app.get("/login", function(req, res){
-    res.render("login");
-});
-
-app.post("/login", passport.authenticate("local",{
-    successRedirect: "/",
-    failureRedirect: "login"
-}), function(req, res){
-});
-
-app.get("/logout", function(req, res){
-    req.logout();
-    res.redirect("/");
-});
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-//Comments Routes
-app.post("/blogs/:id/comments", function(req, res){
-    Blog.findById(req.params.id, function(err, rBlog){
-        if(err){
-            console.log(err);
-            res.redirect("/");
-        }else{
-            Comment.create(req.body.comment, function(err, rComment){
-                if(err){
-                    console.log(err);
-                    res.redirect("back");
-                }else{
-                    rComment.author.id  = req.user._id;
-                    rComment.author.username = req.user.username;
-                    rComment.save();
-
-                    rBlog.comment.push(rComment);
-                    rBlog.save();
-
-                    res.redirect("/blogs/" + req.params.id);
-                }
-            });
-        }   
-    });
-});
 
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server is Active... ");
