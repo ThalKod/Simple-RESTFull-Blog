@@ -1,4 +1,4 @@
-# RESTFull simple blog(Still in developement...)
+# RESTFull Simple blog
 
 A simple RESTFull Blog Created for learnig basic CRUD operation
 
