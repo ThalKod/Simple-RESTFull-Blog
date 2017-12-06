@@ -30,4 +30,30 @@
                    
                 </div>
             </div>
+
+            <%if(error && error.length >0){%>
+                <div id="msg" class="ui warning message">
+                    <div class="header">
+                      You must be logged in before you can do that!
+                    </div>
+                </div>
+            <%}%>
+
+            <%if(nopermission && nopermission.length > 0){%>
+                <div id="msg" class="ui negative message">
+                    <div class="header">
+                      You don't have permission...
+                    </div>
+                </div>
+           <% } %>
+
+          <% if(success && success.length > 0){ %>
+            <div id="msg" class="ui success message">
+                <div class="header">
+                  <%= success %>
+                </div>
+            </div>
+          <% } %>
+           
+                
     

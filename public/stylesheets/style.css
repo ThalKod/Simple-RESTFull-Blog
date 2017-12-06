@@ -3,7 +3,7 @@ i.icon{
 }
 
 .container.main{
-    margin-top: 100px;
+    margin-top: 90px;
     margin-bottom: 20px;
 }
 
@@ -21,4 +21,8 @@ h1{
 
 .description{
     margin-top: 15px;
+}
+
+#msg{
+    margin-top: 70px;
 }

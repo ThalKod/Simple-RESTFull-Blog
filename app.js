@@ -1,7 +1,3 @@
-//#################################################################################
-//############################# GENERAL SETUP  ####################################
-//#################################################################################
-
 var express          = require("express"),
     methodOverride   = require("method-override"),
     mongoose         = require("mongoose"),
@@ -16,7 +12,8 @@ var express          = require("express"),
     expressSession   = require("express-session"),
     blogRoute        = require("./routes/blog"),
     commentRoute     = require("./routes/comment"),
-    indexRoute       = require("./routes/index");   
+    indexRoute       = require("./routes/index"),
+    flash            = require("req-flash");      
     
    
 
@@ -25,6 +22,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
+
 
 
 var DBUrl = process.env.DATABASEURL || "mongodb://localhost/blogdb";
@@ -51,11 +49,17 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(flash());
+
 //Setting a General Middleware
 app.use(function(req, res, next){
-     res.locals.currentUser = req.user;
+     res.locals.currentUser = req.user; 
+     res.locals.error = req.flash("error");
+     res.locals.success = req.flash("success");
+     res.locals.nopermission  = req.flash("nopermission");
      next();    
  });
+
 
 app.use("/",indexRoute);
 app.use("/blogs",blogRoute);
