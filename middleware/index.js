@@ -32,18 +32,25 @@ middleware.checkBlogOwnership = function(req, res, next){
 
 middleware.checkCommentOwnership = function(req, res, next){
     if(req.isAuthenticated()){
-        Comment.findById(req.params.commentId, function(err, rComment){
+
+        Blog.findById(req.params.id, function(err, rBlog){
             if(err){
-                console.log(err);
                 res.redirect("back");
             }else{
-                if(rComment.author.id.equals(req.user._id)){
-                    next();
-                }else{
-                    res.redirect("back");
-                }
+                Comment.findById(req.params.commentId, function(err, rComment){
+                    if(err){
+                        console.log(err);
+                        res.redirect("back");
+                    }else{
+                        if(rComment.author.id.equals(req.user._id)){
+                            next();
+                        }else{
+                            res.redirect("back");
+                        }
+                    }
+                });
             }
-        });
+       });
     }else{
         res.redirect("back");
     }
