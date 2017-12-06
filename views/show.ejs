@@ -32,17 +32,17 @@
               <div class="text">
                <%= comment.text %>
               </div>
-              <%if(comment.author.id.equals(currentUser._id)){%>
+              <%if(currentUser && comment.author.id.equals(currentUser._id)){%>
                 <form id="delCommentForm" action="/blogs/<%= blog._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
                     <div class="actions">
-                       <a class="reply">Delete</a>
+                       <a class="response">Delete</a>
                     </div>
                  </form>
              <%}%>  
             </div>
           </div>
        <% }); %>  
-        <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
+        <form id="replyForm" class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
           <div class="field">
             <textarea name="comment[text]"></textarea>
           </div>
