@@ -12,10 +12,12 @@
             <div class="description">
                 <p><%- blog.body %></p>
             </div>
-            <a class="ui orange inverted button" href="/blogs/<%= blog._id %>/edit">Edit</a>
-            <form id="delete" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
-                <button class="ui red inverted button" type="submit" >Delete</button>
-            </form>
+            <%if(currentUser && blog.userId.equals(currentUser._id)){%>
+                <a class="ui orange inverted button" href="/blogs/<%= blog._id %>/edit">Edit</a>
+                <form id="delete" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+                    <button class="ui red inverted button" type="submit" >Delete</button>
+                </form>
+            <%}%>
         </div>
     </div> 
     <div class="ui comments">
@@ -30,15 +32,17 @@
               <div class="text">
                <%= comment.text %>
               </div>
-              <form id="delCommentForm" action="/blogs/<%= blog._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
-                 <div class="actions">
-                    <a class="reply">Delete</a>
-                 </div>
-              </form>
+              <%if(currentUser && comment.author.id.equals(currentUser._id)){%>
+                <form id="delCommentForm" action="/blogs/<%= blog._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
+                    <div class="actions">
+                       <a class="response">Delete</a>
+                    </div>
+                 </form>
+             <%}%>  
             </div>
           </div>
        <% }); %>  
-        <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
+        <form id="replyForm" class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
           <div class="field">
             <textarea name="comment[text]"></textarea>
           </div>
