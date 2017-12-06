@@ -1,8 +1,8 @@
-# RESTFull simple blog
+# RESTFull simple blog(Still in developement...)
 
-A simple RESTFull Blog Created implementing a basic CRUD 
+A simple RESTFull Blog Created for learnig basic CRUD operation
 
-![alt text](https://github.com/ThalKod/Simple-RESTFull-Blog/blob/master/Index.jpg)
+![alt text](https://github.com/ThalKod/Simple-RESTFull-Blog/blob/master/index.png)
 
 ## Built With
 
