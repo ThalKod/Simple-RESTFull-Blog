@@ -1,12 +1,13 @@
 var express     = require("express"),
     Blog        = require("../models/blog"),
-    Comment     = require("../models/comment");
+    Comment     = require("../models/comment"),
+    middleware  = require("../middleware/index");
 
 var router      = express.Router({mergeParams: true});
 
 
 //Create Comment routes
-router.post("/", function(req, res){
+router.post("/", middleware.isLogedIn, function(req, res){
     Blog.findById(req.params.id, function(err, rBlog){
         console.log(req.params.id);
         if(err || rBlog === null){
@@ -34,15 +35,12 @@ router.post("/", function(req, res){
 });
 
 //Delete Comment Routes
-router.delete("/:commentId", function(req, res){
+router.delete("/:commentId", middleware.checkCommentOwnership,  function(req, res){
     Comment.findByIdAndRemove(req.params.commentId, function(err){
-        if(err){
-            console.log(err);
-            res.redirect("back");
-        }else{
-            console.log("deleted");
-            res.redirect("/blogs/" + req.params.id);
-        }
+       
+     console.log("deleted");
+     res.redirect("/blogs/" + req.params.id);
+
     });
 });
 
