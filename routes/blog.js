@@ -31,6 +31,9 @@ router.post("/", middleware.isLogedIn, function(req, res){
         if(err){
             res.render("new");
         }else{
+            rblogs.userId = req.user._id;
+            rblogs.save();
+
             res.redirect("/blogs");
         }
     });
@@ -48,7 +51,7 @@ router.get("/:id", function(req, res){
 });
 
 //EDIT ROUTE
-router.get("/:id/edit", function(req,res){
+router.get("/:id/edit", middleware.checkBlogOwnership, function(req,res){
    Blog.findById(req.params.id, function(err, rBlog){
         if(err){
             res.redirect("/blogs");
@@ -59,7 +62,7 @@ router.get("/:id/edit", function(req,res){
 });
 
 //UPDATE ROUTES
-router.put("/:id", function(req, res){
+router.put("/:id", middleware.checkBlogOwnership, function(req, res){
 
     req.body.blog.body = req.sanitize(req.body.blog.body);
 
@@ -73,10 +76,10 @@ router.put("/:id", function(req, res){
 });
 
 //Destroy ROUTE
-router.delete("/:id", function(req, res){
+router.delete("/:id", middleware.checkBlogOwnership, function(req, res){
     Blog.findByIdAndRemove(req.params.id, function(err){
         if(err){
-            res.redirect("/blogs");
+            res.redirect("back");
         }
         else{
             res.redirect("/blogs");

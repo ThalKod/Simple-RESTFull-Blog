@@ -12,7 +12,11 @@ var blogSchema = new mongoose.Schema({
              type: mongoose.Schema.Types.ObjectId,
              ref:"Comment"
          }
-     ]
+     ],
+     userId:{
+         type: mongoose.Schema.Types.ObjectId,
+         ref:"User"
+     }
 }); 
 
 var Blog = mongoose.model("Blog", blogSchema);
