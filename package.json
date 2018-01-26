@@ -9,7 +9,7 @@
   "engines": {
     "node": "8.5.0"
   },
-  "author": "Thal",
+  "author": "Thal Marcelin",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
