@@ -12,5 +12,6 @@ A simple RESTFull Blog Created for learnig basic CRUD operation
 
 ### Start
 ```
+npm install
 node app.js
 ```
