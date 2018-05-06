@@ -1,6 +1,6 @@
 # RESTFull Simple blog
 
-A simple RESTFull Blog Created for learnig basic CRUD operation
+A simple RESTFull Blog.
 
 https://blog-app-893.herokuapp.com
 
